@@ -1,89 +1,99 @@
-const themes = {
-    superheroes: ['🦸‍♂️', '🦸‍♀️', '🦹‍♂️', '🦹‍♀️', '🦸', '🦹', '🦇', '🕷️'],
-    animals: ['🐶', '🐱', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'],
-    cars: ['🚗', '🚓', '🚑', '🚒', '🚐', '🚚', '🚜', '🏎️']
-};
+// js/memory.js
 
-let cards = [];
-let flippedCards = [];
-let matchedPairs = 0;
-let totalPairs = 0;
-let lockBoard = false;
-
-function startMemoryGame(theme, numCards) {
-    const board = document.getElementById('game-board');
-    board.innerHTML = ''; 
-    board.setAttribute('data-cards', numCards); 
+document.addEventListener('DOMContentLoaded', () => {
+    // Een uitgebreide lijst met emoticons zodat er altijd genoeg unieke zijn
+    const allEmojis = ['🐶', '🐱', '🦊', '🐼', '🦁', '🐵', '🐸', '🦄', '🍎', '🍌', '🚗', '🚀', '⭐', '⚽', '🎸', '🍦'];
     
-    matchedPairs = 0;
-    totalPairs = numCards / 2;
-    flippedCards = [];
-    lockBoard = false;
+    const grid = document.getElementById('memory-grid'); // Zorg dat je ID in HTML hiermee overeenkomt
+    let cardsChosen = [];
+    let cardsChosenId = [];
+    let cardsWon = [];
+    
+    // Aantal paren (bijv. 8 paren = 16 kaarten)
+    const totalPairs = 8; 
 
-    let selectedImages = themes[theme].slice(0, totalPairs);
-    cards = [...selectedImages, ...selectedImages];
-    cards.sort(() => Math.random() - 0.5);
-
-    cards.forEach(item => {
-        const cardElement = document.createElement('div');
-        cardElement.classList.add('card');
-        cardElement.dataset.item = item;
-
-        const content = document.createElement('span');
-        content.classList.add('content');
-        content.innerText = item;
+    function createBoard() {
+        // 1. Pak een willekeurige selectie van unieke emoticons op basis van het aantal paren
+        allEmojis.sort(() => 0.5 - Math.random());
+        const selectedEmojis = allEmojis.slice(0, totalPairs);
         
-        cardElement.appendChild(content);
-        cardElement.addEventListener('click', flipCard);
-        board.appendChild(cardElement);
-    });
-}
+        // 2. Verdubbel ze zodat we paren krijgen en schud ze door elkaar
+        const gameEmojis = [...selectedEmojis, ...selectedEmojis];
+        gameEmojis.sort(() => 0.5 - Math.random());
 
-function flipCard() {
-    if (lockBoard) return;
-    if (this === flippedCards[0]) return; 
+        grid.innerHTML = '';
+        cardsWon = [];
 
-    this.classList.add('flipped');
-    window.playSound('flip');
-    
-    flippedCards.push(this);
-
-    if (flippedCards.length === 2) {
-        checkForMatch();
-    }
-}
-
-function checkForMatch() {
-    let isMatch = flippedCards[0].dataset.item === flippedCards[1].dataset.item;
-
-    if (isMatch) {
-        window.playSound('match');
-        flippedCards[0].classList.add('matched');
-        flippedCards[1].classList.add('matched');
-        matchedPairs++;
-        resetBoard();
-
-        if (matchedPairs === totalPairs) {
-            setTimeout(showWinScreen, 500);
+        // 3. Bouw de kaarten op het scherm
+        for (let i = 0; i < gameEmojis.length; i++) {
+            const card = document.createElement('div');
+            card.setAttribute('class', 'memory-card');
+            card.setAttribute('data-id', i);
+            card.dataset.emoji = gameEmojis[i]; // Sla de emoji op in een data-attribute
+            
+            card.addEventListener('click', flipCard);
+            grid.appendChild(card);
         }
-    } else {
-        lockBoard = true;
-        setTimeout(() => {
-            flippedCards[0].classList.remove('flipped');
-            flippedCards[1].classList.remove('flipped');
-            resetBoard();
-        }, 1000);
     }
-}
 
-function resetBoard() {
-    [flippedCards, lockBoard] = [[], false];
-}
+    function flipCard() {
+        const selectedCard = this;
+        const cardId = selectedCard.getAttribute('data-id');
 
-function showWinScreen() {
-    window.playSound('win');
-    document.getElementById('game-screen').classList.remove('active');
-    document.getElementById('game-screen').classList.add('hidden');
-    document.getElementById('win-screen').classList.remove('hidden');
-    document.getElementById('win-screen').classList.add('active');
-}
+        // Als de kaart al goed is (matched) of al open ligt, doe dan niks
+        if (selectedCard.classList.contains('matched') || selectedCard.classList.contains('flipped')) {
+            return;
+        }
+
+        // Voorkom dat je op dezelfde kaart klikt of meer dan 2 tegelijk selecteert
+        if (cardsChosenId.length === 1 && cardsChosenId[0] === cardId) {
+            return;
+        }
+
+        selectedCard.classList.add('flipped');
+        selectedCard.textContent = selectedCard.dataset.emoji;
+        
+        cardsChosen.push(selectedCard.dataset.emoji);
+        cardsChosenId.push(cardId);
+
+        // Als er 2 kaarten zijn geselecteerd, controleren op een match
+        if (cardsChosen.length === 2) {
+            setTimeout(checkForMatch, 500);
+        }
+    }
+
+    function checkForMatch() {
+        const cards = document.querySelectorAll('.memory-card');
+        const optionOneId = cardsChosenId[0];
+        const optionTwoId = cardsChosenId[1];
+
+        if (optionOneId === optionTwoId) {
+            // Zelfde kaart dubbel geklikt
+            cards[optionOneId].classList.remove('flipped');
+            cards[optionOneId].textContent = '';
+        } else if (cardsChosen[0] === cardsChosen[1]) {
+            // MATCH! Geef ze de 'matched' class zodat ze niet meer klikbaar zijn
+            cards[optionOneId].classList.add('matched');
+            cards[optionTwoId].classList.add('matched');
+            cardsWon.push(cardsChosen);
+        } else {
+            // Geen match, draai ze weer om
+            cards[optionOneId].classList.remove('flipped');
+            cards[optionOneId].textContent = '';
+            cards[optionTwoId].classList.remove('flipped');
+            cards[optionTwoId].textContent = '';
+        }
+
+        cardsChosen = [];
+        cardsChosenId = [];
+
+        // Geef eventueel een melding als alle paren gevonden zijn
+        if (cardsWon.length === totalPairs) {
+            setTimeout(() => {
+                alert('Gefeliciteerd! Alle paren zijn gevonden! 🎉');
+            }, 300);
+        }
+    }
+
+    createBoard();
+});
