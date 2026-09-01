@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spelletjes voor Shahin & Liyana</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Tijd om te spelen!</h1>
+            <button id="toggle-sound" class="btn">🔊 Geluid Aan</button>
+        </header>
+
+        <main>
+            <!-- Het Menu Scherm -->
+            <section id="menu-screen" class="screen active">
+                <h2>Kies je memory spel:</h2>
+                
+                <div class="settings-group">
+                    <label for="theme-select">Thema:</label>
+                    <select id="theme-select">
+                        <option value="superheroes">Superhelden</option>
+                        <option value="animals">Dieren</option>
+                        <option value="cars">Auto's</option>
+                    </select>
+                </div>
+
+                <div class="settings-group">
+                    <label for="difficulty-select">Moeilijkheid:</label>
+                    <select id="difficulty-select">
+                        <option value="6">Makkelijk (6 kaarten)</option>
+                        <option value="12">Gemiddeld (12 kaarten)</option>
+                        <option value="16">Moeilijk (16 kaarten)</option>
+                    </select>
+                </div>
+
+                <button id="start-btn" class="btn btn-primary">Start Spel!</button>
+            </section>
+
+            <!-- Het Spelbord (verborgen tot je op start klikt) -->
+            <section id="game-screen" class="screen hidden">
+                <div id="game-board" class="memory-grid"></div>
+                <button id="back-btn" class="btn">⬅ Terug naar menu</button>
+            </section>
+
+            <!-- Het Beloningsscherm (verborgen tot ze winnen) -->
+            <section id="win-screen" class="screen hidden">
+                <h2>Goed gedaan! 🎉</h2>
+                <p>Alle kaartjes zijn gevonden!</p>
+                <button id="play-again-btn" class="btn btn-primary">Nog een keer!</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Hier koppelen we straks de logica -->
+    <script src="js/main.js"></script>
+    <script src="js/memory.js"></script>
+</body>
+</html>

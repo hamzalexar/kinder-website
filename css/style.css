@@ -1,0 +1,152 @@
+/* Basis instellingen (prikkelarm en rustig) */
+:root {
+    --bg-color: #e0f7fa; /* Zacht pastel blauw */
+    --card-bg: #ffffff;
+    --card-back: #4dd0e1; /* Zacht turquoise */
+    --text-color: #333333;
+    --btn-color: #81c784; /* Zacht pastel groen */
+    --btn-hover: #66bb6a;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial Rounded MT Bold', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #455a64;
+}
+
+/* Knoppen */
+.btn {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    font-weight: bold;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: var(--btn-color);
+    color: white;
+    font-size: 20px;
+    padding: 15px 30px;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-hover);
+}
+
+/* Schermen (verbergen en tonen) */
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Instellingen */
+.settings-group {
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #b0bec5;
+    font-size: 16px;
+}
+
+/* Memory Grid */
+.memory-grid {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.memory-grid[data-cards="6"] { grid-template-columns: repeat(3, 100px); }
+.memory-grid[data-cards="12"] { grid-template-columns: repeat(4, 90px); }
+.memory-grid[data-cards="16"] { grid-template-columns: repeat(4, 80px); }
+
+/* Kaartjes */
+.card {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: var(--card-back);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, background-color 0.3s;
+    user-select: none;
+}
+
+.card.flipped {
+    background-color: var(--card-bg);
+    transform: rotateY(180deg);
+}
+
+.card .content {
+    display: none;
+    transform: rotateY(180deg);
+}
+
+.card.flipped .content {
+    display: block;
+}
+
+.card.matched {
+    background-color: #c8e6c9;
+    cursor: default;
+}
+
+/* Confetti Animatie */
+.confetti {
+    font-size: 50px;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+}
