@@ -98,15 +98,22 @@ function checkForMatch() {
     cardsChosen = [];
     cardsChosenId = [];
 
-    // Als alle paren gevonden zijn, toon het win-scherm[cite: 4]
+    // Als alle paren gevonden zijn, toon het win-scherm
     if (cardsWon.length === totalPairs) {
         setTimeout(() => {
             if (window.playSound) window.playSound('win');
+            
             const winScreen = document.getElementById('win-screen');
             const gameScreen = document.getElementById('game-screen');
+            
             if (winScreen && gameScreen) {
+                // Verberg het speelbord
+                gameScreen.classList.remove('active');
                 gameScreen.classList.add('hidden');
+                
+                // Activeer het win-scherm op dezelfde manier als de andere schermen
                 winScreen.classList.remove('hidden');
+                winScreen.classList.add('active');
             } else {
                 alert('Gefeliciteerd! Alle paren zijn gevonden! 🎉');
             }

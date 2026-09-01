@@ -69,15 +69,16 @@ h1, h2 {
     background-color: var(--btn-hover);
 }
 
-/* Schermen (verbergen en tonen) */
+/* Standaard zijn ALLE schermen onzichtbaar en nemen ze geen ruimte in */
 .screen {
-    display: none;
+    display: none !important;
     flex-direction: column;
     align-items: center;
 }
 
+/* Alleen het scherm met de class 'active' wordt getoond */
 .screen.active {
-    display: flex;
+    display: flex !important;
 }
 
 /* Instellingen */
@@ -184,4 +185,29 @@ select {
     font-size: 18px;
     font-weight: bold;
     color: #37474f;
+}
+
+/* Stijl voor het nieuwe win-scherm met de afbeelding als achtergrond */
+#win-screen {
+    background-image: url('../assets/win-background.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    padding: 40px;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Zet de knop mooi onderaan op de afbeelding */
+}
+
+/* Een lichte omlijsting of ruimte voor de knop zodat deze goed leesbaar is */
+.win-card {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+/* Verberg de standaard tekst in de HTML als de afbeelding de tekst al prachtig laat zien */
+#win-screen h2, 
+#win-screen p {
+    display: none; /* De afbeelding bevat zelf al de tekst 'Goed gedaan!', dus we verbergen de losse tekst */
 }
