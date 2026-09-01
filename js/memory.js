@@ -11,8 +11,8 @@ let cardsChosenId = [];
 let cardsWon = [];
 let totalPairs = 8; 
 
-// Deze functie wordt aangeroepen vanuit je main.js wanneer je op start klikt
-function startMemoryGame() {
+// Vang de thema en moeilijkheid op die vanuit main.js worden meegegeven
+function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
     const grid = document.getElementById('game-board');
     
     if (!grid) {
@@ -20,16 +20,8 @@ function startMemoryGame() {
         return;
     }
     
-    // Lees de gekozen moeilijkheid uit de HTML (6, 12 of 16 kaarten)
-    const difficultySelect = document.getElementById('difficulty-select');
-    const totalCards = difficultySelect ? parseInt(difficultySelect.value) : 16;
     totalPairs = totalCards / 2;
-
-    // Lees het gekozen thema uit de HTML
-    const themeSelect = document.getElementById('theme-select');
-    const theme = themeSelect ? themeSelect.value : 'animals';
-
-    let availableEmojis = themeEmojis[theme] || themeEmojis.animals;
+    let availableEmojis = themeEmojis[selectedTheme] || themeEmojis.animals;
 
     // 1. Unieke emoticons selecteren op basis van het aantal benodigde paren
     availableEmojis.sort(() => 0.5 - Math.random());
@@ -60,7 +52,6 @@ function flipCard() {
     const selectedCard = this;
     const cardId = selectedCard.getAttribute('data-id');
 
-    // Al gevonden (matched) of al open? Doe niks.
     if (selectedCard.classList.contains('matched') || selectedCard.classList.contains('flipped')) {
         return;
     }
@@ -89,7 +80,6 @@ function checkForMatch() {
         cards[optionOneId].classList.remove('flipped');
         cards[optionOneId].textContent = '';
     } else if (cardsChosen[0] === cardsChosen[1]) {
-        // MATCH: Maak ze onklikbaar zodat ze niet meer geselecteerd kunnen worden
         cards[optionOneId].classList.add('matched');
         cards[optionTwoId].classList.add('matched');
         cardsWon.push(cardsChosen);
@@ -103,7 +93,6 @@ function checkForMatch() {
     cardsChosen = [];
     cardsChosenId = [];
 
-    // Als alle paren gevonden zijn, toon het win-scherm
     if (cardsWon.length === totalPairs) {
         setTimeout(() => {
             const winScreen = document.getElementById('win-screen');
@@ -118,5 +107,4 @@ function checkForMatch() {
     }
 }
 
-// Maak de functie globaal beschikbaar
 window.startMemoryGame = startMemoryGame;
