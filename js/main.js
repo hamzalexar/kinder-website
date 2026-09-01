@@ -1,4 +1,4 @@
-// DOM Elementen[cite: 3]
+// DOM Elementen
 const screens = {
     menu: document.getElementById('menu-screen'),
     game: document.getElementById('game-screen'),
@@ -20,7 +20,7 @@ function showScreen(screenName) {
     screens[screenName].classList.add('active');
 }
 
-// Luister naar klikken op de grote themaknoppen in het menu
+// Luister naar klikken op de grote themaknoppen
 const themeButtons = document.querySelectorAll('.theme-btn');
 themeButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -40,7 +40,6 @@ btnSound.addEventListener('click', () => {
     btnSound.innerText = soundEnabled ? '🔊 Geluid Aan' : '🔇 Geluid Uit';
 });
 
-// Audio synthese functie[cite: 3]
 window.playSound = function(type) {
     if (!soundEnabled) return;
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
