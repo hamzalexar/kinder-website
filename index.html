@@ -17,28 +17,33 @@
 
         <main>
             <!-- Het Menu Scherm -->
+            <!-- Het Menu Scherm met Grote Thema Knoppen -->
             <section id="menu-screen" class="screen active">
-                <h2>Kies je memory spel:</h2>
+                <h2>Kies een thema om te spelen:</h2>
                 
-                <div class="settings-group">
-                    <label for="theme-select">Thema:</label>
-                    <select id="theme-select">
-                        <option value="superheroes">Superhelden</option>
-                        <option value="animals">Dieren</option>
-                        <option value="cars">Auto's</option>
-                    </select>
+                <div class="theme-buttons-grid">
+                    <button class="theme-btn" data-theme="animals">
+                        <span class="icon">🐶</span>
+                        <span class="label">Dieren</span>
+                    </button>
+                    <button class="theme-btn" data-theme="superheroes">
+                        <span class="icon">🦸‍♂️</span>
+                        <span class="label">Superhelden</span>
+                    </button>
+                    <button class="theme-btn" data-theme="cars">
+                        <span class="icon">🚗</span>
+                        <span class="label">Auto's</span>
+                    </button>
                 </div>
 
-                <div class="settings-group">
+                <div class="settings-group" style="margin-top: 25px;">
                     <label for="difficulty-select">Moeilijkheid:</label>
                     <select id="difficulty-select">
                         <option value="6">Makkelijk (6 kaarten)</option>
                         <option value="12">Gemiddeld (12 kaarten)</option>
-                        <option value="16">Moeilijk (16 kaarten)</option>
+                        <option value="16" selected>Moeilijk (16 kaarten)</option>
                     </select>
                 </div>
-
-                <button id="start-btn" class="btn btn-primary">Start Spel!</button>
             </section>
 
             <!-- Het Spelbord (verborgen tot je op start klikt) -->

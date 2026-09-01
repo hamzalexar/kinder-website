@@ -1,4 +1,4 @@
-// js/memory.js
+// js/memory.js[cite: 4]
 
 const themeEmojis = {
     superheroes: ['🦸‍♂️', '🦸‍♀️', '🦹‍♂️', '⚡', '🔥', '🛡️', '⭐', '💥'],
@@ -11,7 +11,7 @@ let cardsChosenId = [];
 let cardsWon = [];
 let totalPairs = 8; 
 
-// Vang de thema en moeilijkheid op die vanuit main.js worden meegegeven
+// Start de game op basis van het gekozen thema en de moeilijkheid[cite: 4]
 function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
     const grid = document.getElementById('game-board');
     
@@ -23,11 +23,11 @@ function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
     totalPairs = totalCards / 2;
     let availableEmojis = themeEmojis[selectedTheme] || themeEmojis.animals;
 
-    // 1. Unieke emoticons selecteren op basis van het aantal benodigde paren
+    // 1. Unieke emoticons selecteren[cite: 4]
     availableEmojis.sort(() => 0.5 - Math.random());
     const selectedEmojis = availableEmojis.slice(0, totalPairs);
     
-    // 2. Verdubbelen en schudden voor de paren
+    // 2. Verdubbelen en schudden voor de paren[cite: 4]
     const gameEmojis = [...selectedEmojis, ...selectedEmojis];
     gameEmojis.sort(() => 0.5 - Math.random());
 
@@ -36,7 +36,7 @@ function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
     cardsChosen = [];
     cardsChosenId = [];
 
-    // 3. Bouw de kaarten op het bord
+    // 3. Bouw de kaarten op het bord[cite: 4]
     for (let i = 0; i < gameEmojis.length; i++) {
         const card = document.createElement('div');
         card.setAttribute('class', 'memory-card');
@@ -63,6 +63,9 @@ function flipCard() {
     selectedCard.classList.add('flipped');
     selectedCard.textContent = selectedCard.dataset.emoji;
     
+    // Speel geluid af bij het omdraaien[cite: 4]
+    if (window.playSound) window.playSound('flip');
+
     cardsChosen.push(selectedCard.dataset.emoji);
     cardsChosenId.push(cardId);
 
@@ -80,9 +83,11 @@ function checkForMatch() {
         cards[optionOneId].classList.remove('flipped');
         cards[optionOneId].textContent = '';
     } else if (cardsChosen[0] === cardsChosen[1]) {
+        // MATCH: Maak ze onklikbaar en speel match-geluid[cite: 4]
         cards[optionOneId].classList.add('matched');
         cards[optionTwoId].classList.add('matched');
         cardsWon.push(cardsChosen);
+        if (window.playSound) window.playSound('match');
     } else {
         cards[optionOneId].classList.remove('flipped');
         cards[optionOneId].textContent = '';
@@ -93,8 +98,10 @@ function checkForMatch() {
     cardsChosen = [];
     cardsChosenId = [];
 
+    // Als alle paren gevonden zijn, toon het win-scherm[cite: 4]
     if (cardsWon.length === totalPairs) {
         setTimeout(() => {
+            if (window.playSound) window.playSound('win');
             const winScreen = document.getElementById('win-screen');
             const gameScreen = document.getElementById('game-screen');
             if (winScreen && gameScreen) {

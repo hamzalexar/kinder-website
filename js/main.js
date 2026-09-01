@@ -1,11 +1,10 @@
-// DOM Elementen
+// DOM Elementen[cite: 3]
 const screens = {
     menu: document.getElementById('menu-screen'),
     game: document.getElementById('game-screen'),
     win: document.getElementById('win-screen')
 };
 
-const btnStart = document.getElementById('start-btn');
 const btnBack = document.getElementById('back-btn');
 const btnPlayAgain = document.getElementById('play-again-btn');
 const btnSound = document.getElementById('toggle-sound');
@@ -21,12 +20,16 @@ function showScreen(screenName) {
     screens[screenName].classList.add('active');
 }
 
-btnStart.addEventListener('click', () => {
-    const theme = document.getElementById('theme-select').value;
-    const difficulty = parseInt(document.getElementById('difficulty-select').value);
-    
-    startMemoryGame(theme, difficulty);
-    showScreen('game');
+// Luister naar klikken op de grote themaknoppen in het menu
+const themeButtons = document.querySelectorAll('.theme-btn');
+themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const theme = button.getAttribute('data-theme');
+        const difficulty = parseInt(document.getElementById('difficulty-select').value);
+        
+        startMemoryGame(theme, difficulty);
+        showScreen('game');
+    });
 });
 
 btnBack.addEventListener('click', () => showScreen('menu'));
@@ -37,6 +40,7 @@ btnSound.addEventListener('click', () => {
     btnSound.innerText = soundEnabled ? '🔊 Geluid Aan' : '🔇 Geluid Uit';
 });
 
+// Audio synthese functie[cite: 3]
 window.playSound = function(type) {
     if (!soundEnabled) return;
     const ctx = new (window.AudioContext || window.webkitAudioContext)();

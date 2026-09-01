@@ -145,3 +145,43 @@ select {
     from { transform: translateY(0); }
     to { transform: translateY(-20px); }
 }
+
+/* Grote themaknoppen in het menu */
+.theme-buttons-grid {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.theme-btn {
+    background-color: #ffffff;
+    border: 3px solid #b2dfdb;
+    border-radius: 20px;
+    padding: 20px;
+    width: 130px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.theme-btn:hover {
+    transform: scale(1.08);
+    background-color: #e0f2f1;
+    border-color: #4dd0e1;
+}
+
+.theme-btn .icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+.theme-btn .label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #37474f;
+}
