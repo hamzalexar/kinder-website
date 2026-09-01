@@ -1,27 +1,41 @@
 // js/memory.js
 
-const allEmojis = ['🐶', '🐱', '🦊', '🐼', '🦁', '🐵', '🐸', '🦄', '🍎', '🍌', '🚗', '🚀', '⭐', '⚽', '🎸', '🍦'];
+const themeEmojis = {
+    superheroes: ['🦸‍♂️', '🦸‍♀️', '🦹‍♂️', '⚡', '🔥', '🛡️', '⭐', '💥'],
+    animals: ['🐶', '🐱', '🦊', '🐼', '🦁', '🐵', '🐸', '🦄'],
+    cars: ['🚗', '🚕', '🚙', '🚌', '🏎️', '🚓', '🚒', '🚚']
+};
 
 let cardsChosen = [];
 let cardsChosenId = [];
 let cardsWon = [];
-const totalPairs = 8; 
+let totalPairs = 8; 
 
-// Functie wordt aangeroepen door main.js
+// Deze functie wordt aangeroepen vanuit je main.js wanneer je op start klikt
 function startMemoryGame() {
-    // Zoek naar 'memory-grid' of 'grid' in je HTML
-    const grid = document.getElementById('memory-grid') || document.getElementById('grid');
+    const grid = document.getElementById('game-board');
     
     if (!grid) {
-        console.error("Kan het speelveld (grid) niet vinden in de HTML!");
+        console.error("Kan het speelveld (#game-board) niet vinden in de HTML!");
         return;
     }
     
-    // 1. Unieke emoticons selecteren
-    allEmojis.sort(() => 0.5 - Math.random());
-    const selectedEmojis = allEmojis.slice(0, totalPairs);
+    // Lees de gekozen moeilijkheid uit de HTML (6, 12 of 16 kaarten)
+    const difficultySelect = document.getElementById('difficulty-select');
+    const totalCards = difficultySelect ? parseInt(difficultySelect.value) : 16;
+    totalPairs = totalCards / 2;
+
+    // Lees het gekozen thema uit de HTML
+    const themeSelect = document.getElementById('theme-select');
+    const theme = themeSelect ? themeSelect.value : 'animals';
+
+    let availableEmojis = themeEmojis[theme] || themeEmojis.animals;
+
+    // 1. Unieke emoticons selecteren op basis van het aantal benodigde paren
+    availableEmojis.sort(() => 0.5 - Math.random());
+    const selectedEmojis = availableEmojis.slice(0, totalPairs);
     
-    // 2. Verdubbelen en schudden
+    // 2. Verdubbelen en schudden voor de paren
     const gameEmojis = [...selectedEmojis, ...selectedEmojis];
     gameEmojis.sort(() => 0.5 - Math.random());
 
@@ -30,7 +44,7 @@ function startMemoryGame() {
     cardsChosen = [];
     cardsChosenId = [];
 
-    // 3. Kaarten opbouwen
+    // 3. Bouw de kaarten op het bord
     for (let i = 0; i < gameEmojis.length; i++) {
         const card = document.createElement('div');
         card.setAttribute('class', 'memory-card');
@@ -46,7 +60,7 @@ function flipCard() {
     const selectedCard = this;
     const cardId = selectedCard.getAttribute('data-id');
 
-    // Al gevonden of al open? Doe niks.
+    // Al gevonden (matched) of al open? Doe niks.
     if (selectedCard.classList.contains('matched') || selectedCard.classList.contains('flipped')) {
         return;
     }
@@ -75,7 +89,7 @@ function checkForMatch() {
         cards[optionOneId].classList.remove('flipped');
         cards[optionOneId].textContent = '';
     } else if (cardsChosen[0] === cardsChosen[1]) {
-        // MATCH: Maak ze onklikbaar
+        // MATCH: Maak ze onklikbaar zodat ze niet meer geselecteerd kunnen worden
         cards[optionOneId].classList.add('matched');
         cards[optionTwoId].classList.add('matched');
         cardsWon.push(cardsChosen);
@@ -89,12 +103,20 @@ function checkForMatch() {
     cardsChosen = [];
     cardsChosenId = [];
 
+    // Als alle paren gevonden zijn, toon het win-scherm
     if (cardsWon.length === totalPairs) {
         setTimeout(() => {
-            alert('Gefeliciteerd! Alle paren zijn gevonden! 🎉');
+            const winScreen = document.getElementById('win-screen');
+            const gameScreen = document.getElementById('game-screen');
+            if (winScreen && gameScreen) {
+                gameScreen.classList.add('hidden');
+                winScreen.classList.remove('hidden');
+            } else {
+                alert('Gefeliciteerd! Alle paren zijn gevonden! 🎉');
+            }
         }, 300);
     }
 }
 
-// Zorg dat de functie globaal beschikbaar is voor main.js
+// Maak de functie globaal beschikbaar
 window.startMemoryGame = startMemoryGame;

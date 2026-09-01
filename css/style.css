@@ -150,3 +150,32 @@ select {
     from { transform: translateY(0); }
     to { transform: translateY(-20px); }
 }
+
+/* Het speelveld rooster */
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+/* De stijl van een losse memory-kaart */
+.memory-card {
+    background-color: #ffcc00;
+    height: 90px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    user-select: none;
+}
+
+/* Als de kaart omgedraaid of gevonden is */
+.memory-card.flipped,
+.memory-card.matched {
+    background-color: #ffffff;
+}
