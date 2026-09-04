@@ -97,12 +97,22 @@ select {
 /* Memory Grid - Met minmax zodat het rooster nooit kan inklappen */
 .memory-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(70px, 1fr));
     gap: 15px;
     width: 100%;
-    max-width: 520px;
     margin: 20px auto;
     justify-content: center;
+}
+
+/* Moeilijk/gemiddeld: 4 kolommen, rijen komen altijd precies uit */
+.memory-grid.cols-4 {
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
+    max-width: 520px;
+}
+
+/* Makkelijk (6 kaarten): 3 kolommen zodat de laatste rij ook vol en gecentreerd is */
+.memory-grid.cols-3 {
+    grid-template-columns: repeat(3, minmax(70px, 1fr));
+    max-width: 390px;
 }
 
 /* Grote, duidelijke memory-kaarten met een vaste min-breedte en hoogte */

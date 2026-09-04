@@ -6,10 +6,29 @@ const themeEmojis = {
     cars: ['🚗', '🚕', '🚙', '🚌', '🏎️', '🚓', '🚒', '🚚']
 };
 
+// Nederlandse namen per emoji, voor schermlezers[cite: 4]
+const emojiLabels = {
+    '🦸‍♂️': 'superheld', '🦸‍♀️': 'superheldin', '🦹‍♂️': 'schurk', '⚡': 'bliksem',
+    '🔥': 'vuur', '🛡️': 'schild', '⭐': 'ster', '💥': 'explosie',
+    '🐶': 'hond', '🐱': 'kat', '🦊': 'vos', '🐼': 'panda',
+    '🦁': 'leeuw', '🐵': 'aap', '🐸': 'kikker', '🦄': 'eenhoorn',
+    '🚗': 'auto', '🚕': 'taxi', '🚙': 'suv', '🚌': 'bus',
+    '🏎️': 'raceauto', '🚓': 'politieauto', '🚒': 'brandweerwagen', '🚚': 'vrachtwagen'
+};
+
 let cardsChosen = [];
 let cardsChosenId = [];
 let cardsWon = [];
-let totalPairs = 8; 
+let totalPairs = 8;
+
+// Correcte Fisher-Yates shuffle: husselt het array in place en geeft het terug[cite: 4]
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 
 // Start de game op basis van het gekozen thema en de moeilijkheid[cite: 4]
 function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
@@ -24,17 +43,21 @@ function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
     let availableEmojis = themeEmojis[selectedTheme] || themeEmojis.animals;
 
     // 1. Unieke emoticons selecteren[cite: 4]
-    availableEmojis.sort(() => 0.5 - Math.random());
+    shuffleArray(availableEmojis);
     const selectedEmojis = availableEmojis.slice(0, totalPairs);
-    
+
     // 2. Verdubbelen en schudden voor de paren[cite: 4]
     const gameEmojis = [...selectedEmojis, ...selectedEmojis];
-    gameEmojis.sort(() => 0.5 - Math.random());
+    shuffleArray(gameEmojis);
 
     grid.innerHTML = '';
     cardsWon = [];
     cardsChosen = [];
     cardsChosenId = [];
+
+    // Grid netjes laten centreren i.p.v. altijd 4 vaste kolommen[cite: 4]
+    grid.classList.remove('cols-3', 'cols-4');
+    grid.classList.add(totalCards <= 6 ? 'cols-3' : 'cols-4');
 
     // 3. Bouw de kaarten op het bord[cite: 4]
     for (let i = 0; i < gameEmojis.length; i++) {
@@ -42,7 +65,9 @@ function startMemoryGame(selectedTheme = 'animals', totalCards = 16) {
         card.setAttribute('class', 'memory-card');
         card.setAttribute('data-id', i);
         card.dataset.emoji = gameEmojis[i];
-        
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', 'Kaart, verborgen');
+
         card.addEventListener('click', flipCard);
         grid.appendChild(card);
     }
@@ -62,7 +87,8 @@ function flipCard() {
 
     selectedCard.classList.add('flipped');
     selectedCard.textContent = selectedCard.dataset.emoji;
-    
+    selectedCard.setAttribute('aria-label', 'Kaart, omgedraaid');
+
     // Speel geluid af bij het omdraaien[cite: 4]
     if (window.playSound) window.playSound('flip');
 
@@ -82,17 +108,23 @@ function checkForMatch() {
     if (optionOneId === optionTwoId) {
         cards[optionOneId].classList.remove('flipped');
         cards[optionOneId].textContent = '';
+        cards[optionOneId].setAttribute('aria-label', 'Kaart, verborgen');
     } else if (cardsChosen[0] === cardsChosen[1]) {
         // MATCH: Maak ze onklikbaar en speel match-geluid[cite: 4]
+        const label = emojiLabels[cardsChosen[0]] || 'onbekend';
         cards[optionOneId].classList.add('matched');
         cards[optionTwoId].classList.add('matched');
+        cards[optionOneId].setAttribute('aria-label', `Kaart, gevonden: ${label}`);
+        cards[optionTwoId].setAttribute('aria-label', `Kaart, gevonden: ${label}`);
         cardsWon.push(cardsChosen);
         if (window.playSound) window.playSound('match');
     } else {
         cards[optionOneId].classList.remove('flipped');
         cards[optionOneId].textContent = '';
+        cards[optionOneId].setAttribute('aria-label', 'Kaart, verborgen');
         cards[optionTwoId].classList.remove('flipped');
         cards[optionTwoId].textContent = '';
+        cards[optionTwoId].setAttribute('aria-label', 'Kaart, verborgen');
     }
 
     cardsChosen = [];
