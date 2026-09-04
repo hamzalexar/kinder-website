@@ -39,12 +39,18 @@
                 </div>
 
                 <div class="settings-group" style="margin-top: 25px;">
-                    <label for="difficulty-select">Moeilijkheid:</label>
-                    <select id="difficulty-select">
-                        <option value="6">Makkelijk (6 kaarten)</option>
-                        <option value="12">Gemiddeld (12 kaarten)</option>
-                        <option value="16" selected>Moeilijk (16 kaarten)</option>
-                    </select>
+                    <p class="settings-label">Aantal kaarten:</p>
+                    <div class="difficulty-buttons-grid" role="group" aria-label="Kies het aantal kaarten">
+                        <button class="difficulty-btn selected" data-difficulty="6" aria-pressed="true" aria-label="Makkelijk, 6 kaarten">
+                            <span class="icon">⭐</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="12" aria-pressed="false" aria-label="Gemiddeld, 12 kaarten">
+                            <span class="icon">⭐⭐</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="16" aria-pressed="false" aria-label="Moeilijk, 16 kaarten">
+                            <span class="icon">⭐⭐⭐</span>
+                        </button>
+                    </div>
                 </div>
             </section>
 

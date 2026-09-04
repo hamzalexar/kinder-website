@@ -20,14 +20,28 @@ function showScreen(screenName) {
     screens[screenName].classList.add('active');
 }
 
+// Moeilijkheid kiezen via grote sterren-knoppen (i.p.v. een dropdown, makkelijker voor jonge kinderen)
+let selectedDifficulty = 6;
+const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+difficultyButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        selectedDifficulty = parseInt(button.getAttribute('data-difficulty'));
+        difficultyButtons.forEach(b => {
+            b.classList.remove('selected');
+            b.setAttribute('aria-pressed', 'false');
+        });
+        button.classList.add('selected');
+        button.setAttribute('aria-pressed', 'true');
+    });
+});
+
 // Luister naar klikken op de grote themaknoppen
 const themeButtons = document.querySelectorAll('.theme-btn');
 themeButtons.forEach(button => {
     button.addEventListener('click', () => {
         const theme = button.getAttribute('data-theme');
-        const difficulty = parseInt(document.getElementById('difficulty-select').value);
-        
-        startMemoryGame(theme, difficulty);
+
+        startMemoryGame(theme, selectedDifficulty);
         showScreen('game');
     });
 });
