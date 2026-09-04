@@ -3,7 +3,9 @@
 const themeEmojis = {
     superheroes: ['🦸‍♂️', '🦸‍♀️', '🦹‍♂️', '⚡', '🔥', '🛡️', '⭐', '💥'],
     animals: ['🐶', '🐱', '🦊', '🐼', '🦁', '🐵', '🐸', '🦄'],
-    cars: ['🚗', '🚕', '🚙', '🚌', '🏎️', '🚓', '🚒', '🚚']
+    cars: ['🚗', '🚕', '🚙', '🚌', '🏎️', '🚓', '🚒', '🚚'],
+    fruit: ['🍎', '🍌', '🍓', '🍇', '🍊', '🍉', '🍑', '🍍'],
+    ocean: ['🐠', '🐙', '🐳', '🦀', '🐬', '🐡', '🦈', '🐚']
 };
 
 // Nederlandse namen per emoji, voor schermlezers[cite: 4]
@@ -13,7 +15,11 @@ const emojiLabels = {
     '🐶': 'hond', '🐱': 'kat', '🦊': 'vos', '🐼': 'panda',
     '🦁': 'leeuw', '🐵': 'aap', '🐸': 'kikker', '🦄': 'eenhoorn',
     '🚗': 'auto', '🚕': 'taxi', '🚙': 'suv', '🚌': 'bus',
-    '🏎️': 'raceauto', '🚓': 'politieauto', '🚒': 'brandweerwagen', '🚚': 'vrachtwagen'
+    '🏎️': 'raceauto', '🚓': 'politieauto', '🚒': 'brandweerwagen', '🚚': 'vrachtwagen',
+    '🍎': 'appel', '🍌': 'banaan', '🍓': 'aardbei', '🍇': 'druiven',
+    '🍊': 'sinaasappel', '🍉': 'watermeloen', '🍑': 'perzik', '🍍': 'ananas',
+    '🐠': 'vis', '🐙': 'octopus', '🐳': 'walvis', '🦀': 'krab',
+    '🐬': 'dolfijn', '🐡': 'kogelvis', '🦈': 'haai', '🐚': 'schelp'
 };
 
 let cardsChosen = [];

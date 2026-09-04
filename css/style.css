@@ -41,16 +41,18 @@ h1, h2 {
     color: #455a64;
 }
 
-/* Knoppen */
+/* Knoppen - ruim genoeg voor kindervingers op een telefoon/tablet (min. ~44px tikvlak) */
 .btn {
     background-color: #e0e0e0;
     border: none;
-    padding: 10px 20px;
+    padding: 14px 22px;
+    min-height: 44px;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 17px;
     cursor: pointer;
     transition: transform 0.2s, background-color 0.2s;
     font-weight: bold;
+    touch-action: manipulation;
 }
 
 .btn:hover {
@@ -108,12 +110,14 @@ h1, h2 {
     border-radius: 20px;
     padding: 15px 20px;
     min-width: 70px;
+    min-height: 44px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: 0 6px 12px rgba(0,0,0,0.08);
     transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+    touch-action: manipulation;
 }
 
 .difficulty-btn:hover {
@@ -152,8 +156,22 @@ h1, h2 {
     max-width: 390px;
 }
 
+/* Op smalle telefoonschermen iets compacter, zodat kaarten netjes blijven passen */
+@media (max-width: 400px) {
+    .memory-grid {
+        gap: 10px;
+    }
+    .memory-grid.cols-4 {
+        grid-template-columns: repeat(4, minmax(56px, 1fr));
+    }
+    .memory-card {
+        font-size: 2.3rem;
+    }
+}
+
 /* Grote, duidelijke memory-kaarten met een vaste min-breedte en hoogte */
 .memory-card {
+    position: relative;
     background-color: var(--card-back);
     height: 100px;
     border-radius: 15px;
@@ -161,10 +179,11 @@ h1, h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3rem; 
+    font-size: 3rem;
     box-shadow: 0 6px 10px rgba(0,0,0,0.12);
     transition: transform 0.2s, background-color 0.2s;
     user-select: none;
+    touch-action: manipulation;
 }
 
 .memory-card:hover {
@@ -177,10 +196,34 @@ h1, h2 {
     background-color: var(--card-bg);
 }
 
+/* Feestelijk effectje bij een gevonden paar: korte gouden gloed + sprankeltje */
 .memory-card.matched {
     background-color: #c8e6c9;
     cursor: default;
     transform: none;
+    animation: matchPop 0.5s ease-out;
+}
+
+.memory-card.matched::after {
+    content: '✨';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 1.6rem;
+    pointer-events: none;
+    animation: matchSparkle 0.7s ease-out forwards;
+}
+
+@keyframes matchPop {
+    0% { box-shadow: 0 6px 10px rgba(0,0,0,0.12); }
+    40% { transform: scale(1.15); box-shadow: 0 0 20px 8px rgba(255, 213, 79, 0.7); }
+    100% { transform: scale(1); box-shadow: 0 6px 10px rgba(0,0,0,0.12); }
+}
+
+@keyframes matchSparkle {
+    0% { opacity: 0; transform: scale(0.5) translateY(6px); }
+    50% { opacity: 1; transform: scale(1.3) translateY(-6px); }
+    100% { opacity: 0; transform: scale(1) translateY(-18px); }
 }
 
 /* Confetti Animatie */
@@ -215,6 +258,7 @@ h1, h2 {
     align-items: center;
     box-shadow: 0 6px 12px rgba(0,0,0,0.08);
     transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+    touch-action: manipulation;
 }
 
 .theme-btn:hover {
